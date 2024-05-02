@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state = "auto"
 )
 
-st.image("F:\Desktop\Projects\Waste Detection\streamlit\img.png", width = 100)
+st.image("img.png", width = 100)
 st.title(" Welcome to Garbage Detection WebApp")
 st.write("## Lets make our enviornment more clean")
 

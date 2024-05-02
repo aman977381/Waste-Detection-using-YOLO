@@ -52,7 +52,7 @@ def main_loop():
     image_file = st.sidebar.file_uploader("Upload Your Image Here", type=['jpg', 'png', 'jpeg'])
 
     if not image_file:
-        image_file = r"F:\Desktop\Projects\Waste Detection\streamlit\test_img.jpg"
+        image_file = r"test_img.jpg"
     
     uploaded_img = Image.open(image_file)
     uploaded_img = np.array(uploaded_img)
