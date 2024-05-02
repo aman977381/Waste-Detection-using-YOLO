@@ -17,18 +17,20 @@ background_image = """
     background-repeat: no-repeat;
     background-color: rgba(255, 255, 255, 0.1);
 }
+[data-testid=stSidebar] {
+        background-color: #5888c6;
+    }
+</style>
 </style>
 """
 
 st.markdown(background_image, unsafe_allow_html=True)
 
 def predict(img):
-    model = YOLO(r"artifacts\model_trainer\best.pt")
+    model = YOLO(r"F:\Desktop\Projects\Waste Detection\runs\detect\YOLOv8Model\weights\best.pt")
     results = model(img,stream=True)
-    classNames = ['banana', 'chilli', 'drinkcan',
-              'drinkpack', 'foodcan', 'lettuce',
-              'paperbag', 'plasticbag', 'plasticbottle',
-              'plasticcontainer', 'sweetpotato', 'teabag', 'tissueroll']
+    classNames = ['BIODEGRADABLE', 'CARDBOARD', 'GLASS', 'METAL', 'PAPER', 'PLASTIC']
+    name = ""
     for r in results:
         boxes = r.boxes
         for box in boxes:
@@ -43,7 +45,7 @@ def predict(img):
             name = classNames[int(cls)]
 
             cv2.putText(img,f"{name} {conf}",(max(0,x1), max(35,y1)),cv2.FONT_HERSHEY_DUPLEX,0.5,(0,150,0),1)
-    return img
+    return img,name
 
 def main_loop():
     
@@ -56,13 +58,13 @@ def main_loop():
     uploaded_img = np.array(uploaded_img)
     img = uploaded_img.copy()
     #cv2.imshow("orig",original_img)
-    predict_img = predict(img)
+    predict_img, name = predict(img)
 
 
     col1.write("original 📷")
     col1.image(uploaded_img,width = 350)
     #st.sidebar.image(uploaded_img, width = 250)
-    col2.write("Predicted")
+    col2.write(f"👉{name} Predicted")
     col2.image(predict_img, width = 350)
     
     #st.sidebar.download_button("Download fixed image", "fixed.png", "image/png")

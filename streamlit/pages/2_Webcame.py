@@ -16,20 +16,21 @@ background_image = """
     background-size: cover;  # This sets the size to cover 100% of the viewport width and height
     background-position: center;  
     background-repeat: no-repeat;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 1);
 }
+[data-testid=stSidebar] {
+        background-color: #5888c6;
+    }
+</style>
 </style>
 """
 
 st.markdown(background_image, unsafe_allow_html=True)
 
 def predict(img):
-    model = YOLO(r"artifacts\model_trainer\best.pt")
+    model = YOLO(r"F:\Desktop\Projects\Waste Detection\runs\detect\YOLOv8Model\weights\best.pt")
     results = model(img,stream=True)
-    classNames = ['banana', 'chilli', 'drinkcan',
-              'drinkpack', 'foodcan', 'lettuce',
-              'paperbag', 'plasticbag', 'plasticbottle',
-              'plasticcontainer', 'sweetpotato', 'teabag', 'tissueroll']
+    classNames = ['BIODEGRADABLE', 'CARDBOARD', 'GLASS', 'METAL', 'PAPER', 'PLASTIC']
     for r in results:
         boxes = r.boxes
         for box in boxes:

@@ -4,13 +4,13 @@ import streamlit as st
 from PIL import Image
 
 st.set_page_config(
-    page_title="Waste App",
-    page_icon= "👋",
+    page_title="WasteApp",
+    page_icon= "♻️",
     layout = "wide", 
     initial_sidebar_state = "auto"
 )
 
-st.image("img.png", width = 100)
+st.image("F:\Desktop\Projects\Waste Detection\streamlit\img.png", width = 100)
 st.title(" Welcome to Garbage Detection WebApp")
 st.write("## Lets make our enviornment more clean")
 
@@ -30,6 +30,9 @@ background_image = """
     background-repeat: no-repeat;
     background-color: rgba(255, 255, 255, 0.1);
 }
+[data-testid=stSidebar] {
+        background-color: #5888c6;
+    }
 </style>
 """
 
