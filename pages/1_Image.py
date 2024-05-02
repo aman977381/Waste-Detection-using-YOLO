@@ -6,8 +6,7 @@ from PIL import Image
 from ultralytics import YOLO
 
 st.write("# Let's detect the Waste 🗑️")
-st.write("Welcome to Garbage Detection WebApp ! You wana to try garbage detection in live feed 🎥 we got you!")
-st.write("Together, let's take a step towards a cleaner environment.")
+st.write("Welcome to Garbage Detection WebApp! Try uploading an image to see our advanced algorithms in action. We'll analyze the waste and categorize it for you. Together, let's take a step towards a cleaner environment.")
 
 background_image = """
 <style>
@@ -16,7 +15,7 @@ background_image = """
     background-size: cover;  # This sets the size to cover 100% of the viewport width and height
     background-position: center;  
     background-repeat: no-repeat;
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 [data-testid=stSidebar] {
         background-color: #5888c6;
@@ -28,9 +27,10 @@ background_image = """
 st.markdown(background_image, unsafe_allow_html=True)
 
 def predict(img):
-    model = YOLO(r"F:\Desktop\Projects\Waste Detection\runs\detect\YOLOv8Model\weights\best.pt")
+    model = YOLO(r"artifacts\model_trainer\best.pt")
     results = model(img,stream=True)
     classNames = ['BIODEGRADABLE', 'CARDBOARD', 'GLASS', 'METAL', 'PAPER', 'PLASTIC']
+    name = ""
     for r in results:
         boxes = r.boxes
         for box in boxes:
@@ -45,30 +45,30 @@ def predict(img):
             name = classNames[int(cls)]
 
             cv2.putText(img,f"{name} {conf}",(max(0,x1), max(35,y1)),cv2.FONT_HERSHEY_DUPLEX,0.5,(0,150,0),1)
-    return img
+    return img,name
 
 def main_loop():
-    cap = cv2.VideoCapture(0)
-    frame_placeholder = st.empty()
-    with col1: 
-        start_button = st.button("Start")
-    with col3:
-        stop_button = st.button("Stop")
-    if start_button:
-        while cap.isOpened() and not stop_button:
-            ret, frame = cap.read()
-            if not ret:
-                st.write("Video Capture Ended")
-                break
-            img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            predict_img = predict(img)
-            with col2:
-                frame_placeholder.image(predict_img,channels="RGB")
-            if cv2.waitKey(1) & 0xFF == ord("q") or stop_button:
-                break
-        cap.release()
-        cv2.destroyAllWindows()
+    
+    image_file = st.sidebar.file_uploader("Upload Your Image Here", type=['jpg', 'png', 'jpeg'])
 
-col1, col2, col3 = st.columns([1,6,1])
-if __name__ == "__main__":
+    if not image_file:
+        image_file = r"F:\Desktop\Projects\Waste Detection\streamlit\test_img.jpg"
+    
+    uploaded_img = Image.open(image_file)
+    uploaded_img = np.array(uploaded_img)
+    img = uploaded_img.copy()
+    #cv2.imshow("orig",original_img)
+    predict_img, name = predict(img)
+
+
+    col1.write("original 📷")
+    col1.image(uploaded_img,width = 350)
+    #st.sidebar.image(uploaded_img, width = 250)
+    col2.write(f"👉{name} Predicted")
+    col2.image(predict_img, width = 350)
+    
+    #st.sidebar.download_button("Download fixed image", "fixed.png", "image/png")
+
+col1, col2 = st.columns(2)
+if __name__ == '__main__':
     main_loop()
