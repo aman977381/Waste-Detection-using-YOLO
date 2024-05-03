@@ -3,12 +3,12 @@ from-root==1.0.2
 gdown
 streamlit
 streamlit-webrtc
+opencv-python
 
 # YOLOv8 Requirements
 hydra-core>=1.2.0
 matplotlib>=3.2.2
 numpy>=1.18.5
-opencv-python>=4.1.1
 Pillow>=7.1.2
 PyYAML>=5.3.1
 requests>=2.23.0
