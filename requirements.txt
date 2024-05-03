@@ -3,7 +3,7 @@ from-root==1.0.2
 gdown
 streamlit
 streamlit-webrtc
-opencv-python-headless
+
 
 # YOLOv8 Requirements
 hydra-core>=1.2.0
@@ -22,4 +22,5 @@ pandas>=1.1.4
 seaborn>=0.11.0
 setuptools>=65.5.1
 from_root
+opencv-python-headless
 -e .
