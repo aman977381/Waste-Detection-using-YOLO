@@ -3,7 +3,7 @@ from-root==1.0.2
 gdown
 streamlit
 streamlit-webrtc
-opencv-python
+opencv-python-headless
 
 # YOLOv8 Requirements
 hydra-core>=1.2.0
